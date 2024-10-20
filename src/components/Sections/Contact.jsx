@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 // Assets
-import ContactImg1 from "../../assets/img/contact-1.png";
-import ContactImg2 from "../../assets/img/contact-2.png";
-import ContactImg3 from "../../assets/img/contact-3.png";
+import ContactImg1 from '../../assets/img/contact-1.png';
+import ContactImg2 from '../../assets/img/contact-2.png';
+import ContactImg3 from '../../assets/img/contact-3.png';
 
 export default function Contact() {
   return (
@@ -11,7 +11,7 @@ export default function Contact() {
       <div className="lightBg">
         <div className="container">
           <HeaderInfo>
-            <h1 className="font40 extraBold">Let's get in touch</h1>
+            <h1 className="font40 extraBold">Lets get in touch</h1>
             <p className="font13">
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
               nonumy eirmod tempor invidunt ut
@@ -19,7 +19,7 @@ export default function Contact() {
               labore et dolore magna aliquyam erat, sed diam voluptua.
             </p>
           </HeaderInfo>
-          <div className="row" style={{ paddingBottom: "30px" }}>
+          <div className="row" style={{ paddingBottom: '30px' }}>
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
               <Form>
                 <label className="font13">First name:</label>
@@ -57,19 +57,19 @@ export default function Contact() {
                   type="submit"
                   value="Send Message"
                   className="pointer animate radius8"
-                  style={{ maxWidth: "220px" }}
+                  style={{ maxWidth: '220px' }}
                 />
               </SumbitWrapper>
             </div>
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6 flex">
               <div
-                style={{ width: "50%" }}
+                style={{ width: '50%' }}
                 className="flexNullCenter flexColumn"
               >
                 <ContactImgBox>
                   <img
                     src={
-                      "https://img.freepik.com/free-vector/background-with-hand-drawn-contact-elements_23-2147608293.jpg?t=st=1728624381~exp=1728627981~hmac=820b8bfec0706e6b3d1d602d99c1dd2035fc04154fe6c9cdd18dec56054132f8&w=740"
+                      'https://img.freepik.com/free-vector/background-with-hand-drawn-contact-elements_23-2147608293.jpg?t=st=1728624381~exp=1728627981~hmac=820b8bfec0706e6b3d1d602d99c1dd2035fc04154fe6c9cdd18dec56054132f8&w=740'
                     }
                     width={180}
                     height={204}
@@ -80,7 +80,7 @@ export default function Contact() {
                 <ContactImgBox>
                   <img
                     src={
-                      "https://img.freepik.com/free-photo/medium-shot-female-economist-working-office_23-2150167215.jpg?t=st=1728624355~exp=1728627955~hmac=b4c08603937b87a271b61f108d06ea82a3c81f6b0c8f68e1912fb4cc7bca2c02&w=740"
+                      'https://img.freepik.com/free-photo/medium-shot-female-economist-working-office_23-2150167215.jpg?t=st=1728624355~exp=1728627955~hmac=b4c08603937b87a271b61f108d06ea82a3c81f6b0c8f68e1912fb4cc7bca2c02&w=740'
                     }
                     width={180}
                     height={295}
@@ -89,11 +89,11 @@ export default function Contact() {
                   />
                 </ContactImgBox>
               </div>
-              <div style={{ width: "50%" }}>
-                <div style={{ marginTop: "100px" }}>
+              <div style={{ width: '50%' }}>
+                <div style={{ marginTop: '100px' }}>
                   <img
                     src={
-                      "https://img.freepik.com/free-photo/customer-care-webpage-interface-word_53876-134070.jpg?t=st=1728624651~exp=1728628251~hmac=81f3533bc6c51e26c2bf1e474a432351b18568b39de74be8c535e4e7b113acab&w=826"
+                      'https://img.freepik.com/free-photo/customer-care-webpage-interface-word_53876-134070.jpg?t=st=1728624651~exp=1728628251~hmac=81f3533bc6c51e26c2bf1e474a432351b18568b39de74be8c535e4e7b113acab&w=826'
                     }
                     width={278}
                     height={330}
