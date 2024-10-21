@@ -31,10 +31,14 @@ jobs:
         run: |
           docker push agilesam/weza
 
+      - name: Install doctl
+        run: |
+          curl -sSL https://github.com/digitalocean/doctl/releases/latest/download/doctl-1.80.0-linux-amd64.tar.gz | tar xz
+          sudo mv doctl /usr/local/bin
+          doctl version  # Check the installed version
+
       - name: Deploy to DigitalOcean
-        uses: digitalocean/action-doctl@v1
-        with:
-          args: apps create-deployment 3f921aed-86e4-4d2f-9a1b-61f5ff231d1a --format ID,Status # Your app ID
+        run: doctl apps create-deployment 3f921aed-86e4-4d2f-9a1b-61f5ff231d1a --format ID,Status # Your app ID here
         env:
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.APP_PLATFORM_TOKEN }}
 
