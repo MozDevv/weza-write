@@ -88,13 +88,13 @@ export default function Services() {
                       </p>
 
                       {/* Read More Button */}
-                      <Button
+                      {/* <Button
                         variant="text"
                         color="primary"
                         // onClick={() => setIsExpanded(!isExpanded)}
                       >
                         {isExpanded ? 'Read Less' : 'Read More'}
-                      </Button>
+                      </Button> */}
                     </div>
                   </motion.div>
                 );

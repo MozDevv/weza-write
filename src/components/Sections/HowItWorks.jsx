@@ -80,7 +80,7 @@ function HowItWorks() {
                   loop
                   muted
                   playsInline
-                  className="w-full md:w-[300px] h-[200px] md:h-[400px] object-cover"
+                  className="w-full md:w-[300px] h-[200px] md:h-[350px] object-cover"
                 />
               </div>
               <div className="flex flex-col flex-1 gap-3 text-center md:text-left">
