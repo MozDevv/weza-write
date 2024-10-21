@@ -34,7 +34,7 @@ jobs:
       - name: Deploy to DigitalOcean
         uses: digitalocean/action-doctl@v1
         with:
-          args: apps create-deployment 3f921aed-86e4-4d2f-9a1b-61f5ff231d1a # Your app ID
+          args: apps create-deployment 3f921aed-86e4-4d2f-9a1b-61f5ff231d1a --format ID,Status # Your app ID
         env:
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.APP_PLATFORM_TOKEN }}
 
