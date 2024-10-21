@@ -67,7 +67,7 @@ export default function Header() {
           </ButtonWrapper>
         </div>
       </LeftSide>
-      <RightSide className="hidden md:block">
+      <RightSide className="hidden md:block ">
         <VideoWrapper>
           <Video src="/weza 9.mp4" autoPlay loop muted playsInline />
         </VideoWrapper>
