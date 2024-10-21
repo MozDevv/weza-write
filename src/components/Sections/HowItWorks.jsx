@@ -48,8 +48,8 @@ function HowItWorks() {
   }, []);
 
   return (
-    <div id="blog" className="container mx-auto px-4">
-      <h2 className="text-2xl md:text-3xl font-semibold text-center text-gray-800 mb-8 mt-8">
+    <div id="blog" className="container mx-auto lg:px-4">
+      <h2 className="text-[36px] md:text-3xl font-semibold text-center text-gray-800 mb-8 mt-8">
         How It Works
       </h2>
       <p className="text-base md:text-lg text-center text-gray-600 mb-8">
@@ -69,10 +69,10 @@ function HowItWorks() {
             x: isMobile ? 0 : index % 2 === 0 ? 100 : -100,
           }}
           transition={{ duration: 0.5, delay: index * 0.2 }}
-          className="flex flex-col md:flex-row items-center mb-8" // Responsive adjustments
+          className={`flex flex-col md:flex-row items-center mb-8  w-[80%] lg:w-[100%] p-4`} // Adjust width based on screen size
         >
           {index % 2 === 0 ? (
-            <div className="flex flex-col md:flex-row items-center md:items-start bg-white rounded-lg p-4 w-full gap-4">
+            <div className="flex flex-col md:flex-row items-center md:items-start bg-white rounded-lg w-full gap-4 shadow-sm">
               <div className="flex-1 hidden md:flex justify-center">
                 <video
                   src={step.icon}
@@ -94,7 +94,7 @@ function HowItWorks() {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col md:flex-row items-center md:items-start bg-white rounded-lg p-4 w-full gap-4">
+            <div className="flex flex-col md:flex-row items-center md:items-start bg-white rounded-lg w-full gap-4">
               <div className="flex flex-col flex-1 gap-3 text-center md:text-left">
                 <div className="text-lg font-semibold text-gray-800 flex items-center justify-center md:justify-start gap-2">
                   <div className="rounded-full w-10 h-10 bg-tertiary flex items-center justify-center text-white">

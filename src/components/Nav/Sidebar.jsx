@@ -4,14 +4,31 @@ import { Link } from 'react-scroll';
 // Assets
 import CloseIcon from '../../assets/svg/CloseIcon';
 import LogoIcon from '../../assets/svg/Logo';
+import { Button } from '@mui/material';
 
 export default function Sidebar({ sidebarOpen, toggleSidebar }) {
   return (
     <Wrapper className="animate darkBg" sidebarOpen={sidebarOpen}>
       <SidebarHeader className="flexSpaceCenter">
         <div className="flexNullCenter">
-          <LogoIcon />
-          <h1 className="whiteColor font20" style={{ marginLeft: '15px' }}></h1>
+          <Link className="pointer flexNullCenter" to="home" smooth={true}>
+            <div className="flex">
+              {' '}
+              <img
+                src="/logo2.png"
+                alt=""
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  marginRight: '10px',
+                  transform: 'scale(0.7)',
+                  transition: 'transform 0.2s ease-in-out',
+                }}
+              />
+            </div>
+          </Link>{' '}
         </div>
         <CloseBtn
           onClick={() => toggleSidebar(!sidebarOpen)}
@@ -108,31 +125,63 @@ export default function Sidebar({ sidebarOpen, toggleSidebar }) {
         </li>
       </UlStyle>
       <UlStyle className="flexSpaceCenter">
-        <li className="semiBold font15 pointer">
-          <a
-            href="/"
-            style={{ padding: '10px 30px 10px 0' }}
-            className="whiteColor"
-          >
-            Log in
-          </a>
-        </li>
-        <li className="semiBold font15 pointer flexCenter">
-          <a
-            href="/"
-            className="radius8 lightBg"
-            style={{ padding: '10px 15px' }}
-          >
-            Get Started
-          </a>
-        </li>
+        <div className="flex flex-col ml-7">
+          <li className="semiBold font15 pointer">
+            <Button
+              sx={{
+                textTransform: 'none',
+                color: '#fff',
+                backgroundColor: '#1976d2',
+                padding: '10px 20px',
+                borderRadius: '20px',
+                '&:hover': {
+                  backgroundColor: '#155a9b',
+                },
+                fontSize: '14px',
+                width: '100%',
+                maxWidth: '250px',
+                margin: '5px auto',
+              }}
+            >
+              Login
+            </Button>
+          </li>
+          <li className="semiBold font15 pointer flexCenter">
+            <a
+              href="/"
+              className="radius8 lightBg"
+              style={{
+                display: 'block',
+                textAlign: 'center',
+                padding: '10px 20px',
+                backgroundColor: '#1976d2',
+                color: '#fff',
+                borderRadius: '20px',
+                fontSize: '14px',
+                textDecoration: 'none',
+                width: '100%',
+                maxWidth: '250px',
+                margin: '5px auto',
+                transition: 'background-color 0.3s ease',
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = '#155a9b')
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = '#1976d2')
+              }
+            >
+              Get Started
+            </a>
+          </li>
+        </div>
       </UlStyle>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.nav`
-  width: 400px;
+  width: 300px;
   height: 100vh;
   position: fixed;
   top: 0;

@@ -35,7 +35,7 @@ export default function TopNavbar() {
   }, []);
 
   return (
-    <>
+    <div className="w-full">
       {/* MUI Backdrop with CircularProgress Spinner */}
 
       {sidebarOpen && <Backdrop toggleSidebar={toggleSidebar} />}
@@ -161,7 +161,7 @@ export default function TopNavbar() {
           </Wrapper>
         )
       )}
-    </>
+    </div>
   );
 }
 
@@ -173,7 +173,7 @@ const Wrapper = styled.nav`
   z-index: 999;
   overflow: hidden; /* Ensure it does not overflow */
   @media (max-width: 760px) {
-    width: 85%;
+    width: 100%;
   }
 `;
 

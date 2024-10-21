@@ -13,6 +13,7 @@ import Testimonials from '@/components/Sections/Testimonials';
 import HowItWorks from '@/components/Sections/HowItWorks';
 
 import { Backdrop, CircularProgress } from '@mui/material';
+import HowItWorksContainer from '@/components/Sections/HowItWorksContainer';
 
 export default function Landing() {
   const [loading, setLoading] = React.useState(true); // Loading state
@@ -43,7 +44,7 @@ export default function Landing() {
           <Services />
           {/* <Projects /> */}
           <Testimonials />
-          <HowItWorks />
+          <HowItWorksContainer />
           {/* <Pricing />*/}
           <Contact />
           <Footer />
