@@ -1,4 +1,4 @@
-name: Build and Deploy Docker Image
+name: Docker Build, Push, and Deploy to DigitalOcean
 
 on:
   push:
@@ -31,19 +31,11 @@ jobs:
         run: |
           docker push agilesam/weza
 
-      - name: Trigger Rebuild on DigitalOcean App Platform
-        env:
-          APP_PLATFORM_TOKEN: ${{ secrets.APP_PLATFORM_TOKEN }} # Ensure this secret is set in your GitHub repo
-        run: |
-          response=$(curl -s -X POST "https://api.digitalocean.com/v2/apps/3f921aed-86e4-4d2f-9a1b-61f5ff231d1a/deploys" \
-          -H "Authorization: Bearer ${{ secrets.APP_PLATFORM_TOKEN }}" \
-          -H "Content-Type: application/json" \
-          -d '{
-            "spec": {
-              "run_command": "docker run agilesam/weza"
-            }
-          }')
-          echo "Response from DigitalOcean API enjoy!🟢🟢: $response"
+      - name: Deploy to DigitalOcean
+        uses: digitalocean/action-do@v1
+        with:
+          app_id: 3f921aed-86e4-4d2f-9a1b-61f5ff231d1a
+          token: ${{ secrets.APP_PLATFORM_TOKEN }}
 
       - name: Build Completed Successfully
-        run: echo "Build Completed Successfully 😂😂😂😂😂😂😂😂👍"
+        run: echo "Build and Deployment Completed Successfully! 🚀"
