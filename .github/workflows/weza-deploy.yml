@@ -38,7 +38,7 @@ jobs:
           doctl version
 
       - name: Deploy to DigitalOcean
-        run: doctl apps create-deployment 3f921aed-86e4-4d2f-9a1b-61f5ff231d1a --format ID,Status # Your app ID here
+        run: doctl apps create-deployment 3f921aed-86e4-4d2f-9a1b-61f5ff231d1a --format ID # Your app ID here
         env:
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.APP_PLATFORM_TOKEN }}
 
