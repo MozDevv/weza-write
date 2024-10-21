@@ -32,10 +32,10 @@ jobs:
           docker push agilesam/weza
 
       - name: Deploy to DigitalOcean
-        uses: digitalocean/action-do@v1
+        uses: digitalocean/action-doctl@v1
         with:
-          app_id: 3f921aed-86e4-4d2f-9a1b-61f5ff231d1a
           token: ${{ secrets.APP_PLATFORM_TOKEN }}
+          args: 'app deploy 3f921aed-86e4-4d2f-9a1b-61f5ff231d1a' # Replace with your app ID
 
       - name: Build Completed Successfully
         run: echo "Build and Deployment Completed Successfully! 🚀"
