@@ -43,6 +43,7 @@ jobs:
               "run_command": "docker run agilesam/weza"
             }
           }'
+          echo "Response from DigitalOcean API: $response
 
       - name: Build Completed Successfully
         run: echo "Build Completed Successfully 😂😂😂😂😂😂😂😂👍"

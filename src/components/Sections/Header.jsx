@@ -6,7 +6,7 @@ import styled from 'styled-components';
 export default function Header() {
   const [hovered, setHovered] = React.useState(false);
   return (
-    <Wrapper id="home" className="container flexSpaceCenter">
+    <Wrapper id="home" className="container flexSpaceCenter bg-yellow-300">
       <LeftSide className="flexCenter">
         <div>
           <h1 className="extraBold font60 font-montserrat">
