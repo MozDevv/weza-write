@@ -35,15 +35,15 @@ jobs:
         env:
           APP_PLATFORM_TOKEN: ${{ secrets.APP_PLATFORM_TOKEN }} # Ensure this secret is set in your GitHub repo
         run: |
-          curl -X POST "https://api.digitalocean.com/v2/apps/3f921aed-86e4-4d2f-9a1b-61f5ff231d1a/deploys" \
-          -H "Authorization: Bearer $APP_PLATFORM_TOKEN" \
+          response=$(curl -s -X POST "https://api.digitalocean.com/v2/apps/3f921aed-86e4-4d2f-9a1b-61f5ff231d1a/deploys" \
+          -H "Authorization: Bearer ${{ secrets.APP_PLATFORM_TOKEN }}" \
           -H "Content-Type: application/json" \
           -d '{
             "spec": {
               "run_command": "docker run agilesam/weza"
             }
-          }'
-          echo "Response from DigitalOcean API: $response
+          }')
+          echo "Response from DigitalOcean API enjoy!🟢🟢: $response"
 
       - name: Build Completed Successfully
         run: echo "Build Completed Successfully 😂😂😂😂😂😂😂😂👍"
