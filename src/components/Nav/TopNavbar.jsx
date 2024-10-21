@@ -11,7 +11,7 @@ import BurgerIcon from '../../assets/svg/BurgerIcon';
 export default function TopNavbar() {
   const [y, setY] = useState(0);
   const [sidebarOpen, toggleSidebar] = useState(false);
-  const [isMounted, setIsMounted] = useState(false); // New state to check if component is mounted
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,7 +21,6 @@ export default function TopNavbar() {
     setY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
 
-    // Mark the component as mounted
     setIsMounted(true);
 
     return () => {
@@ -36,10 +35,10 @@ export default function TopNavbar() {
       )}
       {isMounted && sidebarOpen && <Backdrop toggleSidebar={toggleSidebar} />}
       <Wrapper
-        className="flexCenter animate whiteBg"
-        style={y > 100 ? { height: '80px' } : { height: '100px' }}
+        className="flexCenter animate whiteBg "
+        style={y > 100 ? { height: '60px' } : { height: '80px' }}
       >
-        <NavInner className="container flexSpaceCenter">
+        <NavInner className="container flexSpaceCenter w-[200px]">
           <Link className="pointer flexNullCenter" to="home" smooth={true}>
             <img
               src="/logo2.png"
@@ -57,19 +56,19 @@ export default function TopNavbar() {
             <img
               src="/logo.png"
               alt=""
-              height={80}
-              width={180}
-              className="ml-[-10px]"
+              height={70}
+              width={160}
+              className="ml-[-25px]"
             />
           </Link>
 
           {isMounted && (
-            <BurderWrapper
+            <BurgerWrapper
               className="pointer"
               onClick={() => toggleSidebar(!sidebarOpen)}
             >
               <BurgerIcon />
-            </BurderWrapper>
+            </BurgerWrapper>
           )}
           <UlWrapper className="flexNullCenter">
             <li className="semiBold font15 pointer">
@@ -162,12 +161,18 @@ const Wrapper = styled.nav`
   top: 0;
   left: 0;
   z-index: 999;
+  overflow: hidden; /* Ensure it does not overflow */
 `;
+
 const NavInner = styled.div`
   position: relative;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space elements properly */
 `;
-const BurderWrapper = styled.button`
+
+const BurgerWrapper = styled.button`
   outline: none;
   border: 0px;
   background-color: transparent;
@@ -176,15 +181,20 @@ const BurderWrapper = styled.button`
   display: none;
   @media (max-width: 760px) {
     display: block;
+    position: absolute;
+    right: 0;
   }
 `;
+
 const UlWrapper = styled.ul`
   display: flex;
   @media (max-width: 760px) {
     display: none;
   }
 `;
+
 const UlWrapperRight = styled.ul`
+  display: flex;
   @media (max-width: 760px) {
     display: none;
   }

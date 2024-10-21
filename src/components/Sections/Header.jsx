@@ -1,15 +1,7 @@
 import React from 'react';
-
-// Components
-
-// Assets
-import HeaderImage from '../../assets/img/2148817069.jpg';
-import QuotesIcon from '../../assets/svg/Quotes';
-import Dots from '../../assets/svg/Dots';
 import { Button } from '@mui/material';
 import { ArrowForwardIos } from '@mui/icons-material';
 import styled from 'styled-components';
-// Import the video file
 
 export default function Header() {
   const [hovered, setHovered] = React.useState(false);
@@ -31,14 +23,7 @@ export default function Header() {
             looking to improve your writing skills or need help with a project,
             we’re here to help.
           </HeaderP>
-          <div
-            //  className="flex flex-row gap-3 bg-white "
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '40px',
-            }}
-          >
+          <ButtonWrapper>
             <Button
               variant="contained"
               size="large"
@@ -79,10 +64,10 @@ export default function Header() {
             >
               Hire a Tutor
             </Button>
-          </div>
+          </ButtonWrapper>
         </div>
       </LeftSide>
-      <RightSide>
+      <RightSide className="hidden md:block">
         <VideoWrapper>
           <Video src="/weza 9.mp4" autoPlay loop muted playsInline />
         </VideoWrapper>
@@ -94,12 +79,14 @@ export default function Header() {
 const Wrapper = styled.section`
   padding-top: 70px;
   width: 100%;
-  min-height: 940px;
+  min-height: 740px;
   display: flex;
   @media (max-width: 960px) {
     flex-direction: column;
+    padding-top: 40px;
   }
 `;
+
 const LeftSide = styled.div`
   width: 50%;
   height: 90%;
@@ -113,6 +100,7 @@ const LeftSide = styled.div`
     margin: 80px 0 50px 0;
   }
 `;
+
 const RightSide = styled.div`
   width: 50%;
   height: auto;
@@ -137,6 +125,16 @@ const HeaderP = styled.div`
   }
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  @media (max-width: 560px) {
+    flex-direction: column;
+    gap: 20px;
+  }
+`;
+
 const VideoWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -151,7 +149,7 @@ const Video = styled.video`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  max-width: 100%; // Ensure it does not exceed the container's width
+  max-width: 100%;
   max-height: 100%;
   margin-right: 20px;
   margin-bottom: 20px;

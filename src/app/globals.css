@@ -26,3 +26,9 @@ body {
     text-wrap: balance;
   }
 }
+@media (max-width: 640px) {
+  .navbar {
+    width: 200px; /* Set the width of the navbar */
+    margin: 0 auto; /* Center the navbar */
+  }
+}
