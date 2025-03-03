@@ -1,56 +1,32 @@
 name: Max Out Runner
 
-on:
+on: 
   workflow_dispatch  # Allows manual execution from GitHub UI
 
 jobs:
   stress-test:
-    runs-on: self-hosted  # Runs on your "mozrun" self-hosted runner
-
+    runs-on: self-hosted  # Ensures this runs on your "mozrun" self-hosted runner
     steps:
       - name: Check System Info
+        shell: pwsh
         run: |
           echo "CPU Info:"
-          wmic cpu get Name,NumberOfCores,NumberOfLogicalProcessors,MaxClockSpeed
+          Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, NumberOfLogicalProcessors, MaxClockSpeed | Format-Table -AutoSize
+          
           echo "RAM Info:"
-          wmic MEMORYCHIP get Capacity, Speed
+          Get-CimInstance Win32_PhysicalMemory | Select-Object Capacity, Speed | Format-Table -AutoSize
+          
           echo "Disk Space:"
-          wmic logicaldisk get name, freespace, size
-
-      - name: CPU Stress Test (Max CPU Usage)
-        run: |
-          echo "Stressing CPU for 60 seconds..."
-          powershell -Command "& { for ($i=0; $i -lt (Get-WmiObject Win32_Processor).NumberOfLogicalProcessors; $i++) { Start-Job { while ($true) {} } }; Start-Sleep -Seconds 60; Get-Job | Remove-Job -Force }"
-
-      - name: RAM Stress Test (Fill RAM)
-        run: |
-          echo "Allocating large memory blocks..."
-          powershell -Command "& { $a = New-Object byte[] (1024MB * 6); Start-Sleep -Seconds 30 }"
-
-      - name: Disk Write Speed Test
-        run: |
-          echo "Running Disk Write Test..."
-          fsutil file createnew testfile.dat 5000000000  # Creates a 5GB file
-          echo "Disk Write Completed."
-
-      - name: Network Speed Test
-        run: |
-          echo "Running network speed test..."
-          curl -o NUL http://speed.hetzner.de/10GB.bin  # Downloads a 10GB file to test network
-
-      - name: Clean Up
-        run: |
-          echo "Cleaning up test files..."
-          rm -f testfile.dat
+          Get-PSDrive -PSProvider FileSystem | Select-Object Name, @{Name="FreeSpace(GB)"; Expression={"{0:N2}" -f ($_.Free/1GB)}}, @{Name="Size(GB)"; Expression={"{0:N2}" -f ($_.Used/1GB + $_.Free/1GB)}} | Format-Table -AutoSize
 
       - name: Send Email Notification
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: "sammymathenge5@gmail.com"
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "Runner Stress Test Completed"
-          body: "The self-hosted runner test is completed."
-          to: "sammymathenge5@gmail.com"
-          from: "GitHub Actions"
+        shell: pwsh
+        run: |
+          $emailFrom = "${{ secrets.EMAIL_PASSWORD }}"
+          $emailTo = "sammymathenge5@gmail.com"
+          $subject = "GitHub Runner Stress Test Completed"
+          $body = "The stress test on your self-hosted GitHub runner has completed successfully."
+          $smtpServer = "smtp.gmail.com"
+          $smtpPort = 587
+          
+          Send-MailMessage -From $emailFrom -To $emailTo -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential (New-Object PSCredential $emailFrom, (ConvertTo-SecureString "${{ secrets.EMAIL_PASSWORD }}" -AsPlainText -Force))
