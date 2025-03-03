@@ -1,41 +1,56 @@
 name: Max Out Runner
 
-on: 
+on:
   workflow_dispatch  # Allows manual execution from GitHub UI
 
 jobs:
   stress-test:
-    runs-on: self-hosted  # Ensures this runs on your "mozrun" self-hosted runner
+    runs-on: self-hosted  # Runs on your "mozrun" self-hosted runner
+
     steps:
       - name: Check System Info
         run: |
-          echo "🔥 CPU Info:"
+          echo "CPU Info:"
           wmic cpu get Name,NumberOfCores,NumberOfLogicalProcessors,MaxClockSpeed
-          echo "🔥 RAM Info:"
+          echo "RAM Info:"
           wmic MEMORYCHIP get Capacity, Speed
-          echo "🔥 Disk Space:"
+          echo "Disk Space:"
           wmic logicaldisk get name, freespace, size
 
       - name: CPU Stress Test (Max CPU Usage)
         run: |
-          echo "🔥 Stressing CPU for 60 seconds..."
-          powershell -Command "& { for ($i=0; $i -lt 8; $i++) { Start-Job { while ($true) {} } }; Start-Sleep -Seconds 60; Get-Job | Remove-Job -Force }"
+          echo "Stressing CPU for 60 seconds..."
+          powershell -Command "& { for ($i=0; $i -lt (Get-WmiObject Win32_Processor).NumberOfLogicalProcessors; $i++) { Start-Job { while ($true) {} } }; Start-Sleep -Seconds 60; Get-Job | Remove-Job -Force }"
 
       - name: RAM Stress Test (Fill RAM)
         run: |
-          echo "🔥 Allocating large memory blocks..."
-          powershell -Command "& { $a = New-Object byte[] (1024MB * 3); Start-Sleep -Seconds 30 }"
+          echo "Allocating large memory blocks..."
+          powershell -Command "& { $a = New-Object byte[] (1024MB * 6); Start-Sleep -Seconds 30 }"
 
       - name: Disk Write Speed Test
         run: |
-          echo "🔥 Running Disk Write Test..."
-          fsutil file createnew testfile.dat 1000000000
-          echo "🔥 Disk Write Completed."
+          echo "Running Disk Write Test..."
+          fsutil file createnew testfile.dat 5000000000  # Creates a 5GB file
+          echo "Disk Write Completed."
 
       - name: Network Speed Test
         run: |
-          echo "🔥 Running network speed test..."
-          curl -o /dev/null http://speed.hetzner.de/1GB.bin
+          echo "Running network speed test..."
+          curl -o NUL http://speed.hetzner.de/10GB.bin  # Downloads a 10GB file to test network
 
       - name: Clean Up
-        run: rm -f testfile.dat
+        run: |
+          echo "Cleaning up test files..."
+          rm -f testfile.dat
+
+      - name: Send Email Notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: "sammymathenge5@gmail.com"
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Runner Stress Test Completed"
+          body: "The self-hosted runner test is completed."
+          to: "sammymathenge5@gmail.com"
+          from: "GitHub Actions"
