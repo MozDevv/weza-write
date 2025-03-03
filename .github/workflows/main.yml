@@ -7,20 +7,26 @@ jobs:
   stress-test:
     runs-on: self-hosted  # Ensures this runs on your "mozrun" self-hosted runner
     steps:
-
       - name: Send Email Notification
-        shell: pwsh
+        shell: powershell
         run: |
-          $emailFrom = "sammymathenge5@gmail.com"
-          $emailTo = "sammymathenge5@gmail.com"
-          $subject = "GitHub Runner Stress Test Completed"
-          $body = "The stress test on your self-hosted GitHub runner has completed successfully."
-          $smtpServer = "smtp.gmail.com"
-          $smtpPort = 587
-          $username = "sammymathenge5@gmail.com"
-          $password = "${{ secrets.EMAIL_PASSWORD }}"
+          try {
+            $emailFrom = "sammymathenge5@gmail.com"
+            $emailTo = "sammymathenge5@gmail.com"
+            $subject = "GitHub Runner Stress Test Completed"
+            $body = "The stress test on your self-hosted GitHub runner has completed successfully."
+            $smtpServer = "smtp.gmail.com"
+            $smtpPort = 587
+            $username = "sammymathenge5@gmail.com"
+            $password = "${{ secrets.EMAIL_APP_PASSWORD }}"
 
-          $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
-          $credential = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
+            $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+            $credential = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
 
-          Send-MailMessage -From $emailFrom -To $emailTo -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential $credential
+            Send-MailMessage -From $emailFrom -To $emailTo -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential $credential
+
+            Write-Host "✅ Email sent successfully!"
+          } catch {
+            Write-Error "❌ Failed to send email: $_"
+            exit 1
+          }
