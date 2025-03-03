@@ -7,26 +7,20 @@ jobs:
   stress-test:
     runs-on: self-hosted  # Ensures this runs on your "mozrun" self-hosted runner
     steps:
-      - name: Check System Info
-        shell: pwsh
-        run: |
-          echo "CPU Info:"
-          Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, NumberOfLogicalProcessors, MaxClockSpeed | Format-Table -AutoSize
-          
-          echo "RAM Info:"
-          Get-CimInstance Win32_PhysicalMemory | Select-Object Capacity, Speed | Format-Table -AutoSize
-          
-          echo "Disk Space:"
-          Get-PSDrive -PSProvider FileSystem | Select-Object Name, @{Name="FreeSpace(GB)"; Expression={"{0:N2}" -f ($_.Free/1GB)}}, @{Name="Size(GB)"; Expression={"{0:N2}" -f ($_.Used/1GB + $_.Free/1GB)}} | Format-Table -AutoSize
 
       - name: Send Email Notification
         shell: pwsh
         run: |
-          $emailFrom = "${{ secrets.EMAIL_PASSWORD }}"
+          $emailFrom = "sammymathenge5@gmail.com"
           $emailTo = "sammymathenge5@gmail.com"
           $subject = "GitHub Runner Stress Test Completed"
           $body = "The stress test on your self-hosted GitHub runner has completed successfully."
           $smtpServer = "smtp.gmail.com"
           $smtpPort = 587
-          
-          Send-MailMessage -From $emailFrom -To $emailTo -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential (New-Object PSCredential $emailFrom, (ConvertTo-SecureString "${{ secrets.EMAIL_PASSWORD }}" -AsPlainText -Force))
+          $username = "sammymathenge5@gmail.com"
+          $password = "${{ secrets.EMAIL_PASSWORD }}"
+
+          $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+          $credential = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
+
+          Send-MailMessage -From $emailFrom -To $emailTo -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential $credential
