@@ -1,46 +1,41 @@
-name: Docker Build, Push, and Deploy to DigitalOcean
+name: Max Out Runner
 
-on:
-  push:
-    branches:
-      - master # Change this to your default branch name if needed
+on: 
+  workflow_dispatch  # Allows manual execution from GitHub UI
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  stress-test:
+    runs-on: self-hosted  # Ensures this runs on your "mozrun" self-hosted runner
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build Docker image
+      - name: Check System Info
         run: |
-          docker build -t weza .
+          echo "🔥 CPU Info:"
+          wmic cpu get Name,NumberOfCores,NumberOfLogicalProcessors,MaxClockSpeed
+          echo "🔥 RAM Info:"
+          wmic MEMORYCHIP get Capacity, Speed
+          echo "🔥 Disk Space:"
+          wmic logicaldisk get name, freespace, size
 
-      - name: Tag Docker image
+      - name: CPU Stress Test (Max CPU Usage)
         run: |
-          docker tag weza agilesam/weza
+          echo "🔥 Stressing CPU for 60 seconds..."
+          powershell -Command "& { for ($i=0; $i -lt 8; $i++) { Start-Job { while ($true) {} } }; Start-Sleep -Seconds 60; Get-Job | Remove-Job -Force }"
 
-      - name: Push Docker image
+      - name: RAM Stress Test (Fill RAM)
         run: |
-          docker push agilesam/weza
+          echo "🔥 Allocating large memory blocks..."
+          powershell -Command "& { $a = New-Object byte[] (1024MB * 3); Start-Sleep -Seconds 30 }"
 
-      - name: Install doctl
+      - name: Disk Write Speed Test
         run: |
-          curl -sSL https://github.com/digitalocean/doctl/releases/latest/download/doctl-1.115.0-linux-amd64.tar.gz | tar xz
-          sudo mv doctl /usr/local/bin
-          doctl version
+          echo "🔥 Running Disk Write Test..."
+          fsutil file createnew testfile.dat 1000000000
+          echo "🔥 Disk Write Completed."
 
-      - name: Deploy to DigitalOcean
-        run: doctl apps create-deployment 3f921aed-86e4-4d2f-9a1b-61f5ff231d1a --format ID # Your app ID here
-        env:
-          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.APP_PLATFORM_TOKEN }}
+      - name: Network Speed Test
+        run: |
+          echo "🔥 Running network speed test..."
+          curl -o /dev/null http://speed.hetzner.de/1GB.bin
 
-      - name: Build Completed Successfully
-        run: echo "Build and Deployment Completed Successfully! 🚀"
+      - name: Clean Up
+        run: rm -f testfile.dat
