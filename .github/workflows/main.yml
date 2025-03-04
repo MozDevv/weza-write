@@ -1,35 +1,44 @@
-name: Debug Runner with Funny Emails
+name: Super Spy Debugger
 
 on:
   workflow_dispatch
 
 jobs:
-  funny-debugger:
+  debug-runner:
     runs-on: self-hosted
     steps:
-      - name: Checking Runner Details
+      - name: 🕵️‍♂️ System Intelligence Report
         run: |
-          echo "Checking system details..."
+          echo "🔍 Gathering intelligence on the runner..."
+          echo "🖥️ System Details:"
           uname -a
-          echo "Current user: $(whoami)"
-          echo "Current Directory: $(pwd)"
-          echo "Listing files..."
+          echo "👤 Current User: $(whoami)"
+          echo "📂 Working Directory: $(pwd)"
+          echo "📜 Listing Files:"
           ls -la
-          echo "Checking system health..."
+          echo "💾 Disk Space:"
           df -h
+          echo "🧠 Memory Usage:"
           free -m
-          echo "Displaying environment variables..."
+          echo "🌐 Network Interfaces:"
+          ip addr show
+          echo "🚀 Active Processes:"
+          ps aux --sort=-%mem | head -20
+          echo "🛠️ Installed Packages:"
+          dpkg --get-selections | grep -v deinstall | head -20
+          echo "🎤 Environment Variables:"
           env | sort
+          echo "🕵️‍♂️ Intelligence report completed!"
 
-      - name: Installing msmtp
+      - name: 📩 Installing Email Agent
         run: |
-          echo "Installing msmtp..."
+          echo "⚙️ Installing msmtp for secret email transmission..."
           sudo apt-get update && sudo apt-get install -y msmtp
-          echo "msmtp installation complete."
+          echo "✅ Installation complete."
 
-      - name: Setting Up Email Configuration
+      - name: 🔐 Setting Up Secure Email Configuration
         run: |
-          echo "Configuring msmtp..."
+          echo "📡 Establishing secure email connection..."
           echo "account default" > ~/.msmtprc
           echo "host smtp.gmail.com" >> ~/.msmtprc
           echo "port 587" >> ~/.msmtprc
@@ -41,20 +50,22 @@ jobs:
           echo "tls_starttls on" >> ~/.msmtprc
           echo "logfile ~/.msmtp.log" >> ~/.msmtprc
           chmod 600 ~/.msmtprc
-          echo "Email configuration complete."
+          echo "✅ Secure email configuration set up!"
 
-      - name: Sending Debug Email
+      - name: ✉️ Sending Secret Message
         run: |
-          echo "Sending a test email..."
-          echo -e "Subject: WARNING! The Robots Are Taking Over\nFrom: sammymathenge5@gmail.com\nTo: sammymathenge10@gmail.com\n\n
-          Hello,\n\n
-          This is a test email from your GitHub Actions workflow. If you receive this, congratulations! Your runner is working fine.\n
-          Otherwise, something broke, and you might need to investigate.\n\n
-          Best regards,\nGitHub Actions Bot\n" | msmtp --from=sammymathenge5@gmail.com sammymathenge10@gmail.com
-          echo "Email sent."
+          echo "📡 Deploying message to HQ..."
+          echo -e "Subject: Mission Critical Update\nFrom: sammymathenge5@gmail.com\nTo: sammymathenge10@gmail.com\n\n
+          🚨 Attention Agent,\n\n
+          The self-hosted runner is active and operational. The enemy (a.k.a. debugging issues) may still be lurking in the shadows.\n
+          If you receive this, our communications channel is secure.\n
+          If not... well, you may need to troubleshoot.\n\n
+          Good luck, agent.\n\n
+          🕵️‍♂️ Over and out!" | msmtp --from=sammymathenge5@gmail.com sammymathenge10@gmail.com
+          echo "✅ Message sent successfully!"
 
-      - name: Checking Email Logs
+      - name: 📜 Analyzing Email Transmission Logs
         run: |
-          echo "Fetching email logs..."
+          echo "🔎 Retrieving email logs for mission debrief..."
           cat ~/.msmtp.log
-          echo "Log check complete."
+          echo "✅ Logs retrieved successfully!"
