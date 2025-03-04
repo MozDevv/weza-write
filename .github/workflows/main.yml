@@ -18,6 +18,7 @@ jobs:
           echo "auth on" >> ~/.msmtprc
           echo "user sammymathenge5@gmail.com" >> ~/.msmtprc
           echo "password ${{ secrets.EMAIL_PASSWORD }}" >> ~/.msmtprc
+          echo "from sammymathenge5@gmail.com" >> ~/.msmtprc   # ✅ FIX: Add envelope-from address
           echo "tls on" >> ~/.msmtprc
           echo "tls_starttls on" >> ~/.msmtprc
           echo "logfile ~/.msmtp.log" >> ~/.msmtprc
@@ -25,7 +26,7 @@ jobs:
 
       - name: Send Email
         run: |
-          echo -e "Subject: GitHub Workflow Notification\nFrom: sammymathenge5@gmail.com\nTo: sammymathenge10@gmail.com\n\nHello!\n\nThis email was sent from your GitHub Actions workflow.\n\nBest regards,\nGitHub Actions Bot" | msmtp sammymathenge10@gmail.com
+          echo -e "Subject: GitHub Workflow Notification\nFrom: sammymathenge5@gmail.com\nTo: sammymathenge10@gmail.com\n\nHello!\n\nThis email was sent from your GitHub Actions workflow.\n\nBest regards,\nGitHub Actions Bot" | msmtp --from=sammymathenge5@gmail.com sammymathenge10@gmail.com
 
       - name: Confirm Email Sent
         run: cat ~/.msmtp.log
