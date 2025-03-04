@@ -1,32 +1,31 @@
-name: Max Out Runner
+name: Send Email
 
-on: 
-  workflow_dispatch  # Allows manual execution from GitHub UI
+on:
+  workflow_dispatch
 
 jobs:
-  stress-test:
-    runs-on: self-hosted  # Ensures this runs on your "mozrun" self-hosted runner
+  email:
+    runs-on: ubuntu-latest
     steps:
-      - name: Send Email Notification
-        shell: powershell
+      - name: Install msmtp
+        run: sudo apt-get install -y msmtp
+
+      - name: Configure msmtp
         run: |
-          try {
-            $emailFrom = "sammymathenge5@gmail.com"
-            $emailTo = "sammymathenge5@gmail.com"
-            $subject = "GitHub Runner Stress Test Completed"
-            $body = "The stress test on your self-hosted GitHub runner has completed successfully."
-            $smtpServer = "smtp.gmail.com"
-            $smtpPort = 587
-            $username = "sammymathenge5@gmail.com"
-            $password = "${{ secrets.EMAIL_APP_PASSWORD }}"
+          echo "account default" > ~/.msmtprc
+          echo "host smtp.gmail.com" >> ~/.msmtprc
+          echo "port 587" >> ~/.msmtprc
+          echo "auth on" >> ~/.msmtprc
+          echo "user sammymathenge5@gmail.com" >> ~/.msmtprc
+          echo "password ${{ secrets.EMAIL_PASSWORD }}" >> ~/.msmtprc
+          echo "tls on" >> ~/.msmtprc
+          echo "tls_starttls on" >> ~/.msmtprc
+          echo "logfile ~/.msmtp.log" >> ~/.msmtprc
+          chmod 600 ~/.msmtprc
 
-            $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
-            $credential = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
+      - name: Send Email
+        run: |
+          echo -e "Subject: GitHub Workflow Notification\nFrom: sammymathenge5@gmail.com\nTo: sammymathenge10@gmail.com\n\nHello!\n\nThis email was sent from your GitHub Actions workflow.\n\nBest regards,\nGitHub Actions Bot" | msmtp sammymathenge10@gmail.com
 
-            Send-MailMessage -From $emailFrom -To $emailTo -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential $credential
-
-            Write-Host "✅ Email sent successfully!"
-          } catch {
-            Write-Error "❌ Failed to send email: $_"
-            exit 1
-          }
+      - name: Confirm Email Sent
+        run: cat ~/.msmtp.log
