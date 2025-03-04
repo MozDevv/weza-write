@@ -1,32 +1,60 @@
-name: Send Email
+name: Debug Runner with Funny Emails
 
 on:
   workflow_dispatch
 
 jobs:
-  email:
+  funny-debugger:
     runs-on: ubuntu-latest
     steps:
-      - name: Install msmtp
-        run: sudo apt-get install -y msmtp
-
-      - name: Configure msmtp
+      - name: Checking Runner Details
         run: |
+          echo "Checking system details..."
+          uname -a
+          echo "Current user: $(whoami)"
+          echo "Current Directory: $(pwd)"
+          echo "Listing files..."
+          ls -la
+          echo "Checking system health..."
+          df -h
+          free -m
+          echo "Displaying environment variables..."
+          env | sort
+
+      - name: Installing msmtp
+        run: |
+          echo "Installing msmtp..."
+          sudo apt-get update && sudo apt-get install -y msmtp
+          echo "msmtp installation complete."
+
+      - name: Setting Up Email Configuration
+        run: |
+          echo "Configuring msmtp..."
           echo "account default" > ~/.msmtprc
           echo "host smtp.gmail.com" >> ~/.msmtprc
           echo "port 587" >> ~/.msmtprc
           echo "auth on" >> ~/.msmtprc
           echo "user sammymathenge5@gmail.com" >> ~/.msmtprc
           echo "password ${{ secrets.EMAIL_PASSWORD }}" >> ~/.msmtprc
-          echo "from sammymathenge5@gmail.com" >> ~/.msmtprc   # ✅ FIX: Add envelope-from address
+          echo "from sammymathenge5@gmail.com" >> ~/.msmtprc
           echo "tls on" >> ~/.msmtprc
           echo "tls_starttls on" >> ~/.msmtprc
           echo "logfile ~/.msmtp.log" >> ~/.msmtprc
           chmod 600 ~/.msmtprc
+          echo "Email configuration complete."
 
-      - name: Send Email
+      - name: Sending Debug Email
         run: |
-          echo -e "Subject: GitHub Workflow Notification\nFrom: sammymathenge5@gmail.com\nTo: sammymathenge10@gmail.com\n\nHello!\n\nThis email was sent from your GitHub Actions workflow.\n\nBest regards,\nGitHub Actions Bot" | msmtp --from=sammymathenge5@gmail.com sammymathenge10@gmail.com
+          echo "Sending a test email..."
+          echo -e "Subject: WARNING! The Robots Are Taking Over\nFrom: sammymathenge5@gmail.com\nTo: sammymathenge10@gmail.com\n\n
+          Hello,\n\n
+          This is a test email from your GitHub Actions workflow. If you receive this, congratulations! Your runner is working fine.\n
+          Otherwise, something broke, and you might need to investigate.\n\n
+          Best regards,\nGitHub Actions Bot\n" | msmtp --from=sammymathenge5@gmail.com sammymathenge10@gmail.com
+          echo "Email sent."
 
-      - name: Confirm Email Sent
-        run: cat ~/.msmtp.log
+      - name: Checking Email Logs
+        run: |
+          echo "Fetching email logs..."
+          cat ~/.msmtp.log
+          echo "Log check complete."
